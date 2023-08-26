@@ -1,4 +1,3 @@
-
 import sys
 import csv
 import os
@@ -16,18 +15,23 @@ def read_file():
             input_file_data.append(row_data)
 
 def edit_data():
-    global changes, input_file_data
+    global changes, input_file_data, output_file_data
     for new_value in changes:
-        column, row, value = new_value.split(",")
-        column, row = int(column), int(row)
-        print(f"Column: {column + 1}")
-        print(f"Row: {row + 1}")
-        print(f"New Value: {value}")
-        print(input_file_data[row][column])
-        input_file_data[row][column] = value
-        print(input_file_data)
-
-
+        try:
+            column, row, value = new_value.split(",")
+            column, row = int(column), int(row)
+            input_file_data[row][column] = value
+        except IndexError:
+            print(f"WARNING! An incorrect data has been detected: \"{new_value}\".")
+            print(f"Check if expected column and row exist in input file. \nStep skipped")
+            continue
+    output_file_data = input_file_data
+    
+def write_data():
+    global output_file_data
+    with open(sys.argv[2], "w", newline="") as output_file:
+        file_writer = csv.writer(output_file)
+        file_writer.writerow(output_file_data)
 
 
 
@@ -66,7 +70,7 @@ def argv_check():
             except ValueError:
                 bad_input_data("row", change_number + 3)
                 return False
-            print(f"Requested change: {change_number + 1} in column {column}, row {row}, new value: {new_value}")
+            print(f"Requested change {change_number + 1}. In column {column}, row {row}, new value: {new_value}")
         return True
     
 #RUN APP
@@ -83,3 +87,4 @@ else:
         changes = sys.argv[3:]
         print(changes)
         edit_data()
+        write_data()
