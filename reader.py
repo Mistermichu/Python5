@@ -31,9 +31,8 @@ def write_data():
     global output_file_data
     with open(sys.argv[2], "w", newline="") as output_file:
         file_writer = csv.writer(output_file)
-        file_writer.writerow(output_file_data)
-
-
+        for new_row_value in output_file_data:
+            file_writer.writerow(new_row_value)
 
 def input_file():
     input_file_name = sys.argv[1]
@@ -83,8 +82,6 @@ else:
     else:
         output_file_name = sys.argv[2]
         read_file()
-        print(input_file_data)
         changes = sys.argv[3:]
-        print(changes)
         edit_data()
         write_data()
