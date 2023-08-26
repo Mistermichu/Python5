@@ -19,9 +19,9 @@ def edit_data():
     for new_value in changes:
         column, row, value = new_value.split(",")
         column, row = int(column), int(row)
-        print(f"Column: {column}")
-        print(f"Row: {row}")
-        print(f"Value: {value}")
+        print(f"Column: {column + 1}")
+        print(f"Row: {row + 1}")
+        print(f"New Value: {value}")
         print(input_file_data[row][column])
         input_file_data[row][column] = value
         print(input_file_data)
