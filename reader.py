@@ -10,11 +10,23 @@ def bad_input_data(value_type, argv_number):
 
 def read_file():
     with open(sys.argv[1], "r") as input_file:
-        for row_data in input_file:
+        file_reader = csv.reader(input_file)
+        for row_data in file_reader:
             input_file_data.append(row_data)
 
 def edit_data():
-    number_of_changes = len(sys.argv - 3)
+    global changes, input_file_data
+    for new_value in changes:
+        column, row, value = new_value.split(",")
+        column, row = int(column), int(row)
+        print(f"Column: {column}")
+        print(f"Row: {row}")
+        print(f"Value: {value}")
+        print(input_file_data[row][column])
+        input_file_data[row][column] = value
+        print(input_file_data)
+
+
 
 
 
@@ -34,11 +46,11 @@ def argv_check():
         changes = sys.argv[3:]
         for change_number, requested_change in enumerate(changes):
             if "," not in requested_change:
-                print("Wrong argv format.")
+                print("Error. Wrong argv format.")
                 return False
             column_row_value = requested_change.split(",")
             if len(column_row_value) != 3:
-                print("Wrong argv format.")
+                print("Error. Wrong argv format.")
                 return False
             column = column_row_value[0]
             row = column_row_value[1]
@@ -69,3 +81,4 @@ else:
         print(input_file_data)
         changes = sys.argv[3:]
         print(changes)
+        edit_data()
